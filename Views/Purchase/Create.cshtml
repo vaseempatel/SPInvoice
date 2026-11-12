@@ -1,0 +1,31 @@
+@{ ViewData["IsSale"] = false; }
+
+@model InvoiceCreateVm
+@{ var isSale = (bool)ViewData["IsSale"]!; ViewData["Title"] = isSale ? "New sale" : "New purchase"; var parties = (IEnumerable<Party>)ViewBag.Parties; var products = (IEnumerable<Product>)ViewBag.Products; }
+<div class="pagehead"><h1>@(isSale?"New sales invoice":"New purchase entry")</h1></div>
+<div class="card formcard"><form method="post">@Html.AntiForgeryToken()<div asp-validation-summary="All" class="error"></div>
+<div class="formgrid"><div><label>@(isSale?"Customer":"Supplier")</label><select asp-for="PartyId" required><option value="">Select party</option>@foreach(var p in parties){<option value="@p.Id">@p.Name</option>}</select></div><div><label asp-for="InvoiceDate">Invoice date</label><input asp-for="InvoiceDate" type="date" /></div><div><label asp-for="Notes">Notes</label><input asp-for="Notes" /></div></div>
+<h2>Items</h2><p class="muted">Use a USB/Bluetooth barcode scanner in the barcode field; most scanners type the code and send Enter.</p>
+<div class="tablewrap"><table id="lines"><thead><tr><th>Barcode scan / product</th><th>Available stock</th><th>Qty</th><th>Unit price (₹)</th><th></th></tr></thead><tbody id="linebody"></tbody></table></div>
+<button type="button" class="button" id="addline">+ Add line</button> <button class="primary">Save invoice</button> <a class="button" href="@(isSale?"/Sales":"/Purchase")">Cancel</a>
+</form></div>
+<script>
+const products = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(products.Select(p=>new {id=p.Id,name=p.Name,sku=p.Sku,barcode=p.Barcode,stock=p.StockQty,price=isSale?p.UnitPrice:p.CostPrice})));
+const isSale = @isSale.ToString().ToLower();
+let rowCount=0;
+function addLine(){
+ const body=document.getElementById('linebody'), tr=document.createElement('tr'), i=rowCount++;
+ tr.innerHTML=`<td><input class="product-search" list="product-list" placeholder="Scan barcode or type product" required><input type="hidden" name="Lines[${i}].ProductId"><datalist id="product-list">${products.map(p=>`<option value="${escapeHtml(p.barcode||p.sku+' - '+p.name)}" data-id="${p.id}">${escapeHtml(p.name)}</option>`).join('')}</datalist></td><td class="stock">—</td><td><input name="Lines[${i}].Quantity" type="number" min="0.001" step="0.001" value="1" required></td><td><input name="Lines[${i}].UnitPrice" type="number" min="0" step=".01" placeholder="Default"></td><td><button type="button" class="button remove">Remove</button></td>`;
+ body.appendChild(tr);
+ const search=tr.querySelector('.product-search'), hidden=tr.querySelector('input[type=hidden]'), stock=tr.querySelector('.stock'), price=tr.querySelector('input[name$=".UnitPrice"]');
+ function resolve(){
+   const val=search.value.trim().toLowerCase();
+   const p=products.find(x=>(x.barcode||'').toLowerCase()===val)||products.find(x=>x.sku.toLowerCase()===val)||products.find(x=>(x.sku+' - '+x.name).toLowerCase()===val)||products.find(x=>x.name.toLowerCase()===val);
+   if(p){hidden.value=p.id;stock.textContent=p.stock;price.value=p.price; if(isSale && p.stock<=0) stock.textContent='OUT OF STOCK';}
+ }
+ search.addEventListener('change',resolve); search.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();resolve();}});
+ tr.querySelector('.remove').addEventListener('click',()=>tr.remove());
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+document.getElementById('addline').addEventListener('click',addLine); addLine();
+</script>

@@ -1,0 +1,8 @@
+@model PartyVm
+@{ ViewData["Title"]="Add party"; }
+<div class="card formcard"><h1>Add supplier / customer</h1><form method="post">@Html.AntiForgeryToken()<div asp-validation-summary="All" class="error"></div><div class="formgrid">
+<div><label asp-for="Type">Party type</label><select asp-for="Type" asp-items="Html.GetEnumSelectList<PartyType>()"></select></div><div><label asp-for="Name">Name</label><input asp-for="Name" required /></div>
+<div><label asp-for="Gstin">GSTIN</label><input asp-for="Gstin" maxlength="15" /></div><div><label asp-for="StateCode">GST state code</label><input asp-for="StateCode" maxlength="2" required /></div>
+<div><label asp-for="Phone">Phone</label><input asp-for="Phone" /></div><div><label asp-for="Email">Email</label><input asp-for="Email" type="email" /></div>
+<div><label asp-for="OpeningBalance">Opening balance (₹)</label><input asp-for="OpeningBalance" type="number" step=".01" /></div><div><label asp-for="Address">Address</label><input asp-for="Address" /></div>
+</div><button class="primary">Save party</button></form></div>

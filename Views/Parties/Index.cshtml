@@ -1,0 +1,7 @@
+@model IEnumerable<Party>
+@{ ViewData["Title"]="Parties"; }
+<div class="pagehead"><h1>Suppliers & Customers</h1><a class="button primary" href="/Parties/Create">Add party</a></div>
+<div class="actions"><a class="button" href="/Parties">All</a><a class="button" href="/Parties?type=Supplier">Suppliers</a><a class="button" href="/Parties?type=Customer">Customers</a></div>
+<div class="card tablewrap"><table><thead><tr><th>Type</th><th>Name</th><th>GSTIN</th><th>State code</th><th>Phone</th><th>Opening balance</th></tr></thead><tbody>
+@foreach(var p in Model){<tr><td>@p.Type</td><td>@p.Name</td><td>@p.Gstin</td><td>@p.StateCode</td><td>@p.Phone</td><td>₹@p.OpeningBalance.ToString("N2")</td></tr>}
+</tbody></table></div>

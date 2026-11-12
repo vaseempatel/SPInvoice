@@ -1,0 +1,7 @@
+@model IEnumerable<Product>
+@{ ViewData["Title"]="Products"; }
+<div class="pagehead"><h1>Products & Stock</h1><a class="button primary" href="/Products/Create">Add product</a></div>
+<form method="get" class="search"><input name="q" value="@ViewBag.Query" placeholder="Search name, SKU or scan barcode and press Enter" autofocus /><button class="button">Search</button></form>
+<div class="card tablewrap"><table><thead><tr><th>SKU</th><th>Barcode</th><th>Product</th><th>HSN</th><th>GST</th><th>Cost</th><th>Sale price</th><th>Stock</th><th>Status</th></tr></thead><tbody>
+@foreach(var p in Model){<tr><td>@p.Sku</td><td>@p.Barcode</td><td>@p.Name</td><td>@p.HsnCode</td><td>@p.GstRate%</td><td>₹@p.CostPrice.ToString("N2")</td><td>₹@p.UnitPrice.ToString("N2")</td><td>@p.StockQty @p.Unit</td><td><span class="pill @(p.StockQty<=p.ReorderLevel?"warn":"ok")">@(p.StockQty<=p.ReorderLevel?"Low stock":"In stock")</span></td></tr>}
+</tbody></table></div>

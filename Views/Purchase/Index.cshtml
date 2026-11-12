@@ -1,0 +1,4 @@
+@model IEnumerable<PurchaseInvoice>
+@{ ViewData["Title"]="Purchases"; }
+<div class="pagehead"><h1>Purchase invoices</h1><a class="button primary" href="/Purchase/Create">New purchase</a></div>
+<div class="card tablewrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>Supplier</th><th>Taxable</th><th>GST</th><th>Total</th></tr></thead><tbody>@foreach(var x in Model){<tr><td><a href="/Purchase/Details/@x.Id">@x.InvoiceNo</a></td><td>@x.InvoiceDate.ToString("dd-MM-yyyy")</td><td>@x.Party?.Name</td><td>₹@x.SubTotal.ToString("N2")</td><td>₹@((x.Cgst+x.Sgst+x.Igst).ToString("N2"))</td><td>₹@x.GrandTotal.ToString("N2")</td></tr>}</tbody></table></div>

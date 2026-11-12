@@ -1,0 +1,9 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>@ViewData["Title"] - Inventory</title><link rel="stylesheet" href="~/css/site.css" /></head>
+<body><header class="top"><a class="brand" href="/">Inventory <small>Purchase & Sales</small></a>
+<nav><a href="/">Dashboard</a><a href="/Products">Products</a><a href="/Parties">Parties</a><a href="/Purchase">Purchases</a><a href="/Sales">Sales</a><a href="/Reports">Reports</a></nav>
+<div class="user">@if(User.Identity?.IsAuthenticated == true){<span>@User.Identity.Name</span><form method="post" action="/Account/Logout"><button class="linkbtn">Logout</button></form>}</div></header>
+<main class="container">@if(TempData["Message"] is string msg){<div class="notice">@msg</div>}@RenderBody()</main>
+<footer>Inventory starter · Verify GST and accounting rules before production use.</footer>
+<script src="~/js/site.js"></script>@await RenderSectionAsync("Scripts", required:false)</body></html>

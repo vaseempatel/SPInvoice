@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "PurchaseSalesInventory": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "http://localhost:8030/;http://localhost:8830"
+    }
+  }
+}

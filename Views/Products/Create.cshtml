@@ -1,0 +1,8 @@
+@model ProductVm
+@{ ViewData["Title"]="Add product"; }
+<div class="card formcard"><h1>Add product</h1><form method="post">@Html.AntiForgeryToken()<div asp-validation-summary="All" class="error"></div><div class="formgrid">
+<div><label asp-for="Sku">SKU / Code</label><input asp-for="Sku" required /></div><div><label asp-for="Name">Product name</label><input asp-for="Name" required /></div>
+<div><label asp-for="Barcode">Barcode (scan or type)</label><input asp-for="Barcode" id="barcode" /></div><div><label asp-for="Unit">Unit</label><input asp-for="Unit" /></div>
+<div><label asp-for="HsnCode">HSN code</label><input asp-for="HsnCode" /></div><div><label asp-for="GstRate">GST rate (%)</label><input asp-for="GstRate" type="number" min="0" max="100" step=".01" /></div>
+<div><label asp-for="CostPrice">Purchase cost</label><input asp-for="CostPrice" type="number" min="0" step=".01" /></div><div><label asp-for="UnitPrice">Selling price</label><input asp-for="UnitPrice" type="number" min="0" step=".01" /></div><div><label asp-for="ReorderLevel">Reorder level</label><input asp-for="ReorderLevel" type="number" min="0" step=".001" /></div>
+</div><button class="primary">Save product</button> <a class="button" href="/Products">Cancel</a></form></div>

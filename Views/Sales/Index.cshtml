@@ -1,0 +1,4 @@
+@model IEnumerable<SalesInvoice>
+@{ ViewData["Title"]="Sales"; }
+<div class="pagehead"><h1>Sales invoices</h1><a class="button success" href="/Sales/Create">New sale</a></div>
+<div class="card tablewrap"><table><thead><tr><th>Invoice</th><th>Date</th><th>Customer</th><th>Taxable</th><th>GST</th><th>Total</th><th>PDF</th></tr></thead><tbody>@foreach(var x in Model){<tr><td><a href="/Sales/Details/@x.Id">@x.InvoiceNo</a></td><td>@x.InvoiceDate.ToString("dd-MM-yyyy")</td><td>@x.Party?.Name</td><td>₹@x.SubTotal.ToString("N2")</td><td>₹@((x.Cgst+x.Sgst+x.Igst).ToString("N2"))</td><td>₹@x.GrandTotal.ToString("N2")</td><td><a href="/InvoicesPdf/Sales/@x.Id">PDF</a></td></tr>}</tbody></table></div>

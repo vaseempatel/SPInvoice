@@ -1,0 +1,6 @@
+@model LoginVm
+@{ ViewData["Title"]="Login"; }
+<div class="login card"><h1>Sign in</h1><p>Purchase & Sales Inventory</p><form method="post">@Html.AntiForgeryToken()<div asp-validation-summary="All" class="error"></div>
+<label asp-for="Email"></label><input asp-for="Email" autocomplete="username" /><span asp-validation-for="Email" class="error"></span>
+<label asp-for="Password"></label><input asp-for="Password" autocomplete="current-password" /><span asp-validation-for="Password" class="error"></span>
+<label><input asp-for="RememberMe" /> Remember me</label><button class="primary">Sign in</button></form></div>

@@ -1,0 +1,9 @@
+@{ ViewData["Title"]="Reports"; var s=(dynamic)ViewBag.Summary; }
+<div class="pagehead"><h1>Reports</h1><a class="button" href="/Reports/Csv?from=@ViewBag.From&to=@ViewBag.To">Export sales CSV</a></div>
+<div class="card"><form method="get" class="search"><label>From <input name="from" type="date" value="@ViewBag.From" /></label><label>To <input name="to" type="date" value="@ViewBag.To" /></label><button class="primary">Run report</button></form></div>
+<div class="cards">
+<div class="metric"><span>Sales (taxable)</span><strong>₹ @(((decimal)s.SalesTaxable).ToString("N2"))</strong></div>
+<div class="metric"><span>Purchases (taxable)</span><strong>₹ @(((decimal)s.PurchasesTaxable).ToString("N2"))</strong></div>
+<div class="metric"><span>Cost of goods sold</span><strong>₹ @(((decimal)s.CostOfGoodsSold).ToString("N2"))</strong></div>
+<div class="metric"><span>Gross profit (before expenses)</span><strong>₹ @(((decimal)s.GrossProfit).ToString("N2"))</strong></div>
+</div><div class="card"><h2>GST summary</h2><p>Output GST on sales: <strong>₹ @(((decimal)s.SalesTax).ToString("N2"))</strong></p><p>Input GST on purchases: <strong>₹ @(((decimal)s.PurchaseTax).ToString("N2"))</strong></p><p class="muted">This is a management summary, not a GST return or net tax liability calculation.</p></div>

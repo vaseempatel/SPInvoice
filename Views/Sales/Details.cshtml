@@ -1,0 +1,15 @@
+@model InvoiceBase
+@{
+    ViewData["Title"] = "Invoice"; var sale = Model is SalesInvoice; var lines = sale ? ((SalesInvoice)Model).Lines.Select(x => new { Name = x.Product?.Name ?? "", Qty = x.Quantity, Rate = x.UnitPrice, Tax = x.GstRate, Total = x.LineTotal }) : ((PurchaseInvoice)Model).Lines.Select(x => new { Name = x.Product?.Name ?? "", Qty = x.Quantity, Rate = x.UnitPrice, Tax = x.GstRate, Total = x.LineTotal });
+}
+<div class="pagehead"><div><h1>@(sale ? "Sales invoice" : "Purchase invoice")</h1><p>@Model.InvoiceNo · @Model.InvoiceDate.ToString("dd MMM yyyy")</p></div>@if (sale)
+    {
+        <a class="button primary" href="/InvoicesPdf/Sales/@Model.Id">Print / Save PDF</a>
+    }</div>
+<div class="card">
+    <h2>@Model.Party?.Name</h2><p>@Model.Party?.Address · GSTIN: @Model.Party?.Gstin</p><div class="tablewrap"><table><thead><tr><th>Product</th><th>Qty</th><th>Rate</th><th>GST %</th><th>Line total incl. tax</th></tr></thead><tbody>@foreach (var l in lines)
+                {
+                    <tr><td>@l.Name</td><td>@l.Qty</td><td>₹@l.Rate.ToString("N2")</td><td>@l.Tax</td><td>₹@l.Total.ToString("N2")</td></tr>
+                }</tbody></table></div>
+    <div class="totals"><p>Taxable value <strong>₹@Model.SubTotal.ToString("N2")</strong></p><p>CGST <strong>₹@Model.Cgst.ToString("N2")</strong></p><p>SGST <strong>₹@Model.Sgst.ToString("N2")</strong></p><p>IGST <strong>₹@Model.Igst.ToString("N2")</strong></p><h2>Grand total ₹@Model.GrandTotal.ToString("N2")</h2></div>
+</div>

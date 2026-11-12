@@ -1,0 +1,9 @@
+@{ ViewData["Title"]="Dashboard"; }
+<div class="pagehead"><div><h1>Dashboard</h1><p>Overview of your business</p></div><div><a class="button primary" href="/Purchase/Create">New purchase</a> <a class="button success" href="/Sales/Create">New sale</a></div></div>
+<div class="cards">
+<div class="metric"><span>Purchases this month</span><strong>₹ @(((decimal)ViewBag.PurchaseTotal).ToString("N2"))</strong></div>
+<div class="metric"><span>Sales this month</span><strong>₹ @(((decimal)ViewBag.SalesTotal).ToString("N2"))</strong></div>
+<div class="metric"><span>Inventory value at cost</span><strong>₹ @(((decimal)ViewBag.StockValue).ToString("N2"))</strong></div>
+<div class="metric"><span>Active products</span><strong>@ViewBag.ProductCount</strong></div>
+</div>
+<div class="card"><h2>Quick actions</h2><div class="actions"><a class="button primary" href="/Products/Create">Add product</a><a class="button" href="/Parties/Create?type=Supplier">Add supplier</a><a class="button" href="/Parties/Create?type=Customer">Add customer</a><a class="button" href="/Reports">Open reports</a></div><p class="muted">Low-stock products: <strong>@ViewBag.LowStock</strong></p></div>
